@@ -1,6 +1,11 @@
-#include <stddef.h>
+//
+// Created by maleal on 8/31/19.
+//
 
-#ifndef _socket_h_
+#ifndef SUDOKU_REMOTO_SOCKET_H
+#define SUDOKU_REMOTO_SOCKET_H
+
+#include <stddef.h>
 
 typedef struct {
     int fileDescriptor
@@ -18,4 +23,4 @@ void socket_connect(socket_t * self, const char * host, const char * service);
 
 int socket_bind_and_listen(socket_t * self, const char * host, const char * service);
 
-#endif
+#endif //SUDOKU_REMOTO_SOCKET_H
