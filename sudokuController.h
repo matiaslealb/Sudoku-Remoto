@@ -1,7 +1,8 @@
 //
 // Created by maleal on 9/1/19.
 //
-
+#define ERROR 1
+#define SUCCESS 0
 #ifndef SUDOKU_REMOTO_SUDOKUCONTROLLER_H
 #define SUDOKU_REMOTO_SUDOKUCONTROLLER_H
 #include <stdio.h>
