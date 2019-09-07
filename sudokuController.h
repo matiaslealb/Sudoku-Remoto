@@ -13,6 +13,6 @@ typedef struct {
 
 void sudoku_loadBoard(sudoku_t * self, FILE * input);
 
-void sudoku_starGame(sudoku_t * self);
+int sudoku_starGame(sudoku_t * self);
 
 #endif //SUDOKU_REMOTO_SUDOKUCONTROLLER_H

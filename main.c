@@ -1,4 +1,4 @@
-#include "Game/sudokuController.h"
+#include "sudokuController.h"
 
 int main() {
     sudoku_t * sudoku = 0;

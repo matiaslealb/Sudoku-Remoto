@@ -10,8 +10,8 @@
 #include <string.h>
 
 typedef struct {
-    char originalBoard[9][9];
-    char playersBoard[9][9];
+    int originalBoard[9][9];
+    int playersBoard[9][9];
 } board_t;
 
 static const int LOWER_LIMIT_MATRIX = 0;
@@ -28,15 +28,15 @@ void board_printHorizontalSlimBorder();
 
 void board_printNumbers(board_t *self, int rowMatrix);
 
-bool board_addNumber(board_t * self, char number, char row, char column);
+bool board_addNumber(board_t * self, int number, int row, int column);
 
-bool board_eraseNumber(board_t * self, char row, char column);
+bool board_eraseNumber(board_t * self, int row, int column);
 
-bool board_isAnOriginalNumber(board_t * self, char row, char column);
+bool board_isAnOriginalNumber(board_t * self, int row, int column);
 
 bool board_verify(board_t * self);
 
-bool board_verifyLine(char line[9]);
+bool board_verifyLine(int line[9]);
 
 bool board_verifyRows(const board_t * self);
 
@@ -44,7 +44,7 @@ bool board_verifyColumns(const board_t * self);
 
 bool board_verifyAreas(board_t * self);
 
-bool board_verifyArea(board_t * self, char startRow, char startColumn);
+bool board_verifyArea(board_t * self, int startRow, int startColumn);
 
 void board_init(board_t * self, FILE * file);
 

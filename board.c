@@ -5,7 +5,7 @@
 #include "board.h"
 
 void board_print(board_t * self){
-    char rowMatrix = 0;
+    int rowMatrix = 0;
     for (int row = 0; row < 18; ++row) {
         if (row == 2 || row == 4 || row == 8 || row == 10 || row == 14 || row == 16 ){
             board_printHorizontalSlimBorder();
@@ -49,21 +49,21 @@ void board_printHorizontalFatBorder() {
 void board_clean(board_t * self){
     for (int row = LOWER_LIMIT_MATRIX; row < UPPER_LIMIT_MATRIX; ++row) {
         for (int column = 0; column < UPPER_LIMIT_MATRIX; ++column) {
-            if (!board_isAnOriginalNumber(self, (char)row, (char)column)){
+            if (!board_isAnOriginalNumber(self, row, column)){
                 self->originalBoard[row][column] = 0;
             }
         }
     }
 }
 
-bool board_isAnOriginalNumber(board_t * self, char row, char column){
+bool board_isAnOriginalNumber(board_t * self, int row, int column){
     if (self->playersBoard[row][column] == self->originalBoard[row][row]) {
         return true;
     }
     return false;
 }
 
-bool board_addNumber(board_t * self, char number, char row, char column){
+bool board_addNumber(board_t * self, int number, int row, int column){
     if (self->playersBoard[row][column] == 0){
         self->playersBoard[row][column] = number;
         return true;
@@ -71,7 +71,7 @@ bool board_addNumber(board_t * self, char number, char row, char column){
     return false;
 }
 
-bool board_eraseNumber(board_t * self, char row, char column){
+bool board_eraseNumber(board_t * self, int row, int column){
     if (!board_isAnOriginalNumber(self, row, column)){
         self->playersBoard[row][column] = 0;
         return true;
@@ -79,8 +79,8 @@ bool board_eraseNumber(board_t * self, char row, char column){
     return false;
 }
 
-bool board_verifyLine(char line[UPPER_LIMIT_MATRIX]) {
-    char numbersSeen[UPPER_LIMIT_MATRIX];
+bool board_verifyLine(int line[]) {
+    int numbersSeen[9];
     bool verified = true;
     int i = 0;
     while (verified){
@@ -97,7 +97,12 @@ bool board_verifyLine(char line[UPPER_LIMIT_MATRIX]) {
 
 bool board_verifyRows(const board_t * self) {
     for (int row = LOWER_LIMIT_MATRIX; row < UPPER_LIMIT_MATRIX; ++row) {
-        if(!board_verifyLine(self->playersBoard[row])){
+        int rowToTest[9];
+        for (int column = 0; column < 9; ++column)
+        {
+           rowToTest[column] = self->playersBoard[row][column];
+        }
+        if(!board_verifyLine(rowToTest)){
             return false;
         }
     }
@@ -106,7 +111,7 @@ bool board_verifyRows(const board_t * self) {
 
 bool board_verifyColumns(const board_t * self) {
     for (int column = LOWER_LIMIT_MATRIX; column < UPPER_LIMIT_MATRIX; ++column) {
-        char columnToTest[UPPER_LIMIT_MATRIX];
+        int columnToTest[9];
         for (int row = LOWER_LIMIT_MATRIX; row < UPPER_LIMIT_MATRIX; ++row) {
             columnToTest[row] = self->playersBoard[row][column];
             if(!board_verifyLine(columnToTest)){
@@ -128,9 +133,9 @@ bool board_verifyAreas(board_t * self) {
     return true;
 }
 
-bool board_verifyArea(board_t * self, char startRow, char startColumn) {
-    char areaLenght = 0;
-    char area[UPPER_LIMIT_MATRIX];
+bool board_verifyArea(board_t * self, int startRow, int startColumn) {
+    int areaLenght = 0;
+    int area[9];
     for (int row = startRow; row < startRow+3; ++row) {
         for (int column = startColumn; column < startColumn+3; ++column) {
             area[areaLenght] = self->playersBoard[row][column];
@@ -162,7 +167,7 @@ bool board_verify(board_t * self){
 void board_init(board_t * self, FILE * file){
     for (int row = LOWER_LIMIT_MATRIX; row < UPPER_LIMIT_MATRIX; ++row) {
         for (int column = LOWER_LIMIT_MATRIX; column < UPPER_LIMIT_MATRIX; ++column) {
-            char number = getc(file);
+            int number = getc(file);
             self->originalBoard[row][column] = number;
             self->playersBoard[row][column] = number;
         }
