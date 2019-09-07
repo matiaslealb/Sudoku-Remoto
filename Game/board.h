@@ -7,15 +7,26 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct {
     char originalBoard[9][9];
     char playersBoard[9][9];
 } board_t;
 
-const char * board_print(board_t * self);
+static const int LOWER_LIMIT_MATRIX = 0;
+
+static const int UPPER_LIMIT_MATRIX = 9;
+
+void board_print(board_t * self);
 
 void board_clean(board_t * self);
+
+void board_printHorizontalFatBorder();
+
+void board_printHorizontalSlimBorder();
+
+void board_printNumbers(board_t *self, int rowMatrix);
 
 bool board_addNumber(board_t * self, char number, char row, char column);
 

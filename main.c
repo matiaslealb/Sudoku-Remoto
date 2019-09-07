@@ -1,6 +1,11 @@
-#include <stdio.h>
+#include "Game/sudokuController.h"
 
 int main() {
-    printf("Hello, World!\n");
+    sudoku_t * sudoku = 0;
+    sudoku_starGame(sudoku);
+
+    board_print(sudoku->board);
+
+
     return 0;
 }
