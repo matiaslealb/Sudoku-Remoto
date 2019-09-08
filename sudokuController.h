@@ -16,4 +16,6 @@ void sudoku_loadBoard(sudoku_t * self, FILE * input);
 
 int sudoku_starGame(sudoku_t * self);
 
+void processMode(char * arguments);
+
 #endif //SUDOKU_REMOTO_SUDOKUCONTROLLER_H

@@ -20,5 +20,10 @@ int sudoku_starGame(sudoku_t * self){
     return SUCCESS;
 }
 
+void processMode(char * arguments){
+    //procesar si es modo cliente o servidor
+}
+
+
 
 

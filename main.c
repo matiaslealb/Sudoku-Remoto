@@ -1,10 +1,5 @@
 #include "sudokuController.h"
 
-int main() {
-    sudoku_t sudoku;
-    int status = sudoku_starGame(&sudoku);
-    if(status == 0){
-        board_print(sudoku.board);
-    }
-    return 0;
+int main(int argc, char *argv[]) {
+    processMode(argv);
 }

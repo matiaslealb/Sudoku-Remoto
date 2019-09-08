@@ -3,53 +3,45 @@
 #include <stdbool.h>
 #include "socket.h"
 
-int socket_send(socket_t * self, const void * buffer, size_t size){
-    while (bytes_sent < request_len && is_there_a_socket_error == false && is_the_remote_socket_closed == false) {
-        s = send(skt, &request[bytes_sent], request_len - bytes_sent, MSG_NOSIGNAL);
-
-        if (s == -1) {  // ups,  hubo un error
-            printf("Error: %s\n", strerror(errno));
-            is_there_a_socket_error = true;
+int socket_send(socket_t * self, const char * request, size_t sizeOfRequest){
+    int bytesSent = 0;
+    int status = 0;
+    while (bytesSent < sizeOfRequest ) {
+        status = send(self->fileDescriptor, &request[bytesSent], sizeOfRequest - bytesSent, MSG_NOSIGNAL);
+        if (status == -1) {
+            perror("Error sending message");
+            socket_release(self);
+            return 1;
         }
-        else if (s == 0) { // nos cerraron el socket :(
-            is_the_remote_socket_closed = true;
+        else if (status == 0) {
+            printf("Socket was close");
+            socket_release(self);
+            return 1;
         }
         else {
-            bytes_sent += s;
+            bytesSent += status;
         }
     }
 
-    if (is_the_remote_socket_closed || is_there_a_socket_error) {
-        shutdown(skt, SHUT_RDWR);
-        close(skt);
-        return 1;
-    }
 }
 
-int socket_receive(socket_t * socket, void * buffer, size_t size){
-    while (is_there_a_socket_error == false && is_the_remote_socket_closed == false) {
-        s = recv(skt, &response[bytes_recv], RESPONSE_MAX_LEN - bytes_recv - 1, 0);
-
-        if (s == -1) {
-            printf("Error: %s\n", strerror(errno));
-            is_there_a_socket_error = true;
-        }
-        else if (s == 0) {
-            // cerraron el socket del otro lado:
-            // voy a asumir que nos dieron toda la respuesta (estoy simplificando esto)
-            is_the_remote_socket_closed = true;
+int socket_receive(socket_t * socket, char * response, size_t sizeOfResponse){
+    int status = 0;
+    int bytesReceive = 0;
+    bool connection = true;
+    while (connection && sizeOfResponse > bytesReceive ) {
+        status = recv(socket->fileDescriptor, &response[bytesReceive], sizeOfResponse - bytesReceive - 1, 0);
+        if (status > 0) {
+            bytesReceive = status;
+            response[bytesReceive] = 0;
+            bytesReceive = 0;
         }
         else {
-            bytes_recv = s;
-
-            response[bytes_recv] = 0;
-            printf("%s", response);
-
-            //reusamos el mismo buffer, no me interesa tener toda la
-            //respuesta en memoria
-            bytes_recv = 0;
+            perror("Error receiving message");
+            connection = false;
         }
     }
+    return status;
 }
 
 void socket_init(socket_t * socket){
@@ -103,5 +95,22 @@ void getAddress(const char *host, const char *service, int *address, struct addr
 }
 
 int socket_bind_and_listen(socket_t * self, const char * host, const char * service){
+    int status = 0;
+    struct addrinfo *ptr = NULL;
+    status = bind(self->fileDescriptor, ptr->ai_addr, ptr->ai_addrlen);
+    if (status == -1) {
+        perror("Error binding");
+        close(self->fileDescriptor);
+        freeaddrinfo(ptr);
+        return 1;
+    }
+    freeaddrinfo(ptr);
+    status = listen(self->fileDescriptor, 20);
+    if (status == -1) {
+        perror("Error listening");
+        close(self->fileDescriptor);
+        return 1;
+    }
 
+    return 0;
 }

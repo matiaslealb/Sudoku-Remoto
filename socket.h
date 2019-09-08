@@ -21,9 +21,9 @@ typedef struct {
     int fileDescriptor
 } socket_t;
 
-int socket_send(socket_t * self, const void * buffer, size_t size);
+int socket_send(socket_t * self, const char request[], size_t sizeOfRequest);
 
-int socket_receive(socket_t * socket, void * buffer, size_t size);
+int socket_receive(socket_t * socket, char * response, size_t sizeOfResponse);
 
 void socket_init(socket_t * socket);
 
