@@ -9,11 +9,10 @@ void sudoku_loadBoard(sudoku_t * self, FILE * input){
 }
 
 int sudoku_starGame(sudoku_t * self){
-    FILE * input;
+    FILE * input; // Acordarse de cerrarlo
     input = fopen("board.txt", "r");
-
-    if (! input) {
-        perror("Error");
+    if (input == NULL) {
+        perror("Error opening file");
         return ERROR;
     } else {
         sudoku_loadBoard(self, input);

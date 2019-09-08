@@ -10,7 +10,7 @@
 
 typedef struct {
     board_t * board;
-}sudoku_t;
+} sudoku_t;
 
 void sudoku_loadBoard(sudoku_t * self, FILE * input);
 
