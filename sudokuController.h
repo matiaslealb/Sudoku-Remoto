@@ -16,6 +16,10 @@ void sudoku_loadBoard(sudoku_t * self, FILE * input);
 
 int sudoku_starGame(sudoku_t * self);
 
-void processMode(char * arguments);
+int processMode(char * arguments[]);
+
+void startServer(char *port);
+
+void startClient(char *hostName, char *port);
 
 #endif //SUDOKU_REMOTO_SUDOKUCONTROLLER_H
