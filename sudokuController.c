@@ -38,10 +38,7 @@ int processMode(char * arguments[]){
 }
 
 void startClient(char *hostName, char *port) {
-    socket_t socket;
-    socket_init(&socket);
-    socket_connect(&socket,hostName,port);
-    socket_bind_and_listen(&socket, hostName, port);
+    
 
 }
 
