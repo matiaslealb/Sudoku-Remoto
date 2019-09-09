@@ -1,7 +1,8 @@
 //
 // Created by maleal on 8/31/19.
 //
-
+#define ERROR 1
+#define SUCCESS 0
 #ifndef SUDOKU_REMOTO_SOCKET_H
 #define SUDOKU_REMOTO_SOCKET_H
 
@@ -27,11 +28,15 @@ typedef struct {
 
 int socket_send(socket_t * self, const char * request, size_t sizeOfRequest);
 
-int socket_receive(socket_t * socket, char * response, size_t sizeOfResponse);
+bool socket_receive(socket_t * socket, char * response, size_t sizeOfResponse);
 
 void socket_release(socket_t * self);
 
 int socket_connect(socket_t * self);
+
+int socket_initServerMode(socket_t * self, const char * service);
+
+int socket_initClientMode(socket_t * self, const char * host, const char * service);
 
 int socket_bind_and_listen(socket_t * socketToBindAndListen);
 
